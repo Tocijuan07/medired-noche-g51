@@ -3,8 +3,8 @@
 // Aplica las reglas del negocio y las validaciones.
 // No sabe nada de HTTP (req/res) ni de cómo se guardan los datos.
 // =====================================================================
-const repo = require('../repositories/pacientes.repository');
-const { validarPaciente, construirPaciente } = require('../models/paciente');
+const repo = require('../repositories/medicos.repository');
+const { validarMedico, construirMedico } = require('../models/medico');
 const HttpError = require('../utils/http-error');
 
 async function listar() {
@@ -12,24 +12,24 @@ async function listar() {
 }
 
 async function obtener(id) {
-  const paciente = await repo.findById(id);
-  if (!paciente) throw new HttpError(404, `No existe el paciente con id ${id}`);
-  return paciente;
+  const medico = await repo.findById(id);
+  if (!medico) throw new HttpError(404, `No existe el medico con id ${id}`);
+  return medico;
 }
 
 async function crear(datos) {
-  const errores = validarPaciente(datos);
+  const errores = validarMedico(datos);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
 
-  const paciente = construirPaciente(datos);
+  const medico = construirMedico(datos);
 
   // Regla de negocio: no puede haber dos usuarios con el mismo email
   // (el email es con lo que se inicia sesión). 409 = Conflict.
- if (await repo.findByDocumento(paciente.documento)) {
-    throw new HttpError(409, `Ya existe un paciente con el documento ${paciente.documento}`);
+ if (await repo.findByRegistroMedico(medico.registro_medico)) {
+    throw new HttpError(409, `Ya existe un medico con el registro médico ${medico.registro_medico}`);
   }
 
-  return repo.create(paciente);
+  return repo.create(medico);
 }
 
 module.exports = { listar, obtener, crear };
