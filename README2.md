@@ -10,7 +10,7 @@ Repositorio: `medired-noche-g51`
 |---|---|---|
 | <Juan Diego Parra Patiño> | <Tocijuan07> | ms-pacientes |
 | <Juan Diego Parra Patiño> | <Tocijuan07> | ms-medicos |
-| <Fabian Esteban Lopez Arias> | <fabianlopezar> | ms-citas |
+| <Fabian Esteban Lopez Arias | <Fabianlopezar> | ms-citas |
 | <Juan Camilo Salgado Baldión> | <Trolkerberg> | ms-historias |
 | <Juan Camilo Salgado Baldión> | <Trolkerberg> | ms-medicamentos |
 
