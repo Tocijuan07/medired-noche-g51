@@ -8,11 +8,11 @@ Repositorio: `medired-noche-g51`
 
 | Integrante | Usuario de GitHub | Microservicio a cargo |
 |---|---|---|
-| <Juan Diego Parra Patiño> | <Tocijuan07> | ms-pacientes |
-| <Juan Diego Parra Patiño> | <Tocijuan07> | ms-medicos |
-| <Fabian Esteban Lopez Arias | <Fabianlopezar> | ms-citas |
-| <Juan Camilo Salgado Baldión> | <Trolkerberg> | ms-historias |
-| <Juan Camilo Salgado Baldión> | <Trolkerberg> | ms-medicamentos |
+| Juan Diego Parra Patiño | Tocijuan07 | ms-pacientes |
+| Juan Diego Parra Patiño | Tocijuan07 | ms-medicos |
+| Fabian Esteban Lopez Arias | Fabianlopezar | ms-citas |
+| Juan Camilo Salgado Baldión | Trolkerberg | ms-historias |
+| Juan Camilo Salgado Baldión | Trolkerberg | ms-medicamentos |
 
 ## Microservicios
 
