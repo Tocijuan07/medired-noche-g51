@@ -19,10 +19,10 @@ Repositorio: `medired-noche-g51`
 | Carpeta | Entidad | Responsable | Puerto | Depende de |
 |---|---|---|---|---|
 | `ms-usuarios` | Usuarios (inicio de sesión y roles) | Docente | 3001 | — |
-| `ms-pacientes` | Pacientes de la clínica | <Juan Diego Parra> | 3002 | — |
-| `ms-medicos` | Médicos y especialistas | <Juan Diego Parra> | 3003 | — |
-| `ms-citas` | Citas médicas | <Fabian Esteban Lopez Arias> | 3004 | ms-pacientes, ms-medicos |
-| `ms-historias` | Registros de la historia clínica | <Juan Camilo Salgado Baldión> | 3005 | ms-pacientes, ms-medicos (y ms-medicamentos en grupos de 5) |
+| `ms-pacientes` | Pacientes de la clínica | Juan Diego Parra | 3002 | — |
+| `ms-medicos` | Médicos y especialistas | Juan Diego Parra | 3003 | — |
+| `ms-citas` | Citas médicas | Fabian Esteban Lopez Arias | 3004 | ms-pacientes, ms-medicos |
+| `ms-historias` | Registros de la historia clínica | Juan Camilo Salgado Baldión | 3005 | ms-pacientes, ms-medicos (y ms-medicamentos en grupos de 5) |
 | `ms-medicamentos` (solo grupos de 5) | Inventario de farmacia por sede | <Juan Camilo Salgado Baldión> | 3006 | — |
 
 Cada microservicio es dueño exclusivo de sus datos: las relaciones entre ellos se guardan como un id (por ejemplo `paciente_id`) y se consultan por REST.
