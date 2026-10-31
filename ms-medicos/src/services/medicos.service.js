@@ -23,8 +23,7 @@ async function crear(datos) {
 
   const medico = construirMedico(datos);
 
-  // Regla de negocio: no puede haber dos usuarios con el mismo email
-  // (el email es con lo que se inicia sesión). 409 = Conflict.
+  //  Regla de negocio: no puede haber dos médicos con el mismo registro médico. 409 = Conflict.
  if (await repo.findByRegistroMedico(medico.registro_medico)) {
     throw new HttpError(409, `Ya existe un medico con el registro médico ${medico.registro_medico}`);
   }
