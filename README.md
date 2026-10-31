@@ -12,7 +12,6 @@ Repositorio: `medired-noche-g51`
 | Juan Diego Parra Patiño | Tocijuan07 | ms-medicos |
 | Fabian Esteban Lopez Arias | Fabianlopezar | ms-citas |
 | Juan Camilo Salgado Baldión | Trolkerberg | ms-historias |
-| Juan Camilo Salgado Baldión | Trolkerberg | ms-medicamentos |
 
 ## Microservicios
 
@@ -23,8 +22,6 @@ Repositorio: `medired-noche-g51`
 | `ms-medicos` | Médicos y especialistas | Juan Diego Parra | 3003 | — |
 | `ms-citas` | Citas médicas | Fabian Esteban Lopez Arias | 3004 | ms-pacientes, ms-medicos |
 | `ms-historias` | Registros de la historia clínica | Juan Camilo Salgado Baldión | 3005 | ms-pacientes, ms-medicos (y ms-medicamentos en grupos de 5) |
-| `ms-medicamentos` (solo grupos de 5) | Inventario de farmacia por sede | <Juan Camilo Salgado Baldión> | 3006 | — |
-
 Cada microservicio es dueño exclusivo de sus datos: las relaciones entre ellos se guardan como un id (por ejemplo `paciente_id`) y se consultan por REST.
 
 ## Estructura del repositorio
