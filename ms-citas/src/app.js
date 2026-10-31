@@ -5,7 +5,7 @@
 const express = require('express');
 const citasRoutes = require('./routes/citas.routes');
 
-const app = express();
+const app = express;
 
 // Middleware: convierte el cuerpo JSON de la petición en un objeto (req.body)
 app.use(express.json());
