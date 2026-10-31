@@ -41,9 +41,6 @@ function validarHistoria(datos) {
   if (!textoValido(datos.diagnostico)) errores.push('diagnostico es obligatorio');
   if (!textoValido(datos.tratamiento)) errores.push('tratamiento es obligatorio');
   // medicamento_id es opcional: no todas las consultas recetan algo
-  if (datos.medicamento_id !== undefined && datos.medicamento_id !== null && !idValido(datos.medicamento_id)) {
-    errores.push('medicamento_id debe ser un número entero positivo');
-  }
   return errores;
 }
 
@@ -57,10 +54,6 @@ function construirHistoria(datos) {
     motivo_consulta: datos.motivo_consulta.trim(),
     diagnostico: datos.diagnostico.trim(),
     tratamiento: datos.tratamiento.trim(),
-    medicamento_id:
-      datos.medicamento_id === undefined || datos.medicamento_id === null
-        ? null
-        : Number(datos.medicamento_id),
   };
 }
 
