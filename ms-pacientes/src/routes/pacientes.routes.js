@@ -10,7 +10,7 @@ const router = Router();
 router.get('/', controller.listar);      // listar todos los pacientes
 router.get('/:id', controller.obtener);  // obtener un paciente por id
 router.post('/', controller.crear);      // crear un paciente
-
-// Taller 2: agregar PUT /:id (actualizar) y DELETE /:id (eliminar)
+router.put('/:id', controller.actualizar); // actualizar un paciente
+router.delete('/:id', controller.eliminar); // eliminar un paciente
 
 module.exports = router;
