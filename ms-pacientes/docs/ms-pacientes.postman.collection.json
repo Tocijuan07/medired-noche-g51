@@ -1,0 +1,37 @@
+{
+    "info": {
+        "_postman_id": "e1f3c8a0-4b9d-4f5e-9c6b-2f7e5c6e8f1a",
+        "name": "ms-pacientes",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+        "key": "base",
+        "value": "http://localhost:3002"
+        }
+    ],
+    "item": [
+        {
+        "name": "Pacientes API",
+        "item": [
+            {
+            "name": "Get all patients",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                "raw": "{{base}}/pacientes",
+                "host": [
+                    "{{base}}"
+                ],
+                "path": [
+                    "pacientes"
+                ]
+                }
+            },
+            "response": []
+            }
+        ]
+        }
+    ]
+}

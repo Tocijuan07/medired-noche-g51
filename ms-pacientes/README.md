@@ -4,11 +4,21 @@ Microservicio de **pacientes** de MediRed IPS, con **Node.js + Express** organiz
 Datos en memoria; en el Taller 2 se conectará a MySQL.
 
 ## Cómo ejecutarlo
+Requisitos: Node.js 22.0 o superior y MySQL 8.
 
+1. crear la base de datos y su usuario (como root):
+
+```sql
+CREATE DATABASE pacientes_db;
+CREATE USER 'pacientes_user'@'localhost' IDENTIFIED BY 'una-clave-segura';
+GRANT ALL PRIVILEGES ON pacientes_db TO 'pacientes_user '@'localhost';
 ```
-npm install
-copy .env.example .env      # en Linux/Mac: cp .env.example .env
-npm run dev
+
+2. crear la tabla: en la consola `mysql -p pacientes_user -p pacientes_db` y luego `SOURCE db/schema.sql;`
+
+3. npm install
+4. copy .env.example .env      # en Linux/Mac: cp .env.example .env
+5. npm run dev
 ```
 
 Prueben en el navegador: http://localhost:3002/health y http://localhost:3002/pacientes
@@ -37,3 +47,7 @@ Prueben en el navegador: http://localhost:3002/health y http://localhost:3002/pa
 
 Ejemplo de cuerpo para POST:
 `{"nombre": "Marta Ríos", "documento": "1012345678", "fecha_nacimiento": "2003-03-15", "eps": "Nueva EPS", "telefono": "3001234567"}`
+
+## pruebas
+
+colección de Postman en `docs/ms-pacientes.postman.collection.json`

@@ -6,6 +6,11 @@
 // Todas las funciones son async (devuelven promesas) para que el cambio
 // a una base de datos real no obligue a modificar la capa de servicio.
 // =====================================================================
+const pool = require('../db');
+
+function aPaciente(fila){
+  return { ...fila, activo: Boolean(fila.activo) };
+}
 const pacientes = [
   { id: 1, nombre: 'Oscar Jimenez', documento: '1001234567', fecha_nacimiento: '2004-10-28', eps: 'comfenalco' , telefono: '3154414635' },
   { id: 2, nombre: 'Ilana Urrea', documento: '1007654321', fecha_nacimiento: '2006-05-09', eps: 'comfandi' , telefono:'3053124241' },
@@ -14,40 +19,48 @@ const pacientes = [
 let siguienteId = 4;
 
 async function findAll(filtros = {}) {
-  return pacientes.filter((p) =>
-    (!filtros.eps || p.eps.toLowerCase() === String(filtros.eps).toLowerCase()) &&
-    (!filtros.ids || filtros.ids.includes(p.id))
-  );
+  let sql = 'SELECT * FROM pacientes';
+  const condiciciones = [];
+  const valores = [];
+  if (filtros.eps) {
+    condiciciones.push('eps = ?');
+    valores.push(filtros.eps);
+  }
+  if (filtros.ids) {
+    condiciciones.push('id IN (?)');
+    valores.push(filtros.ids);
+  }
+  if (condiciciones.length > 0) sql += ' WHERE ' + condiciciones.join(' AND ');
+  const [filas] = await pool.query(sql + ' ORDER BY id', valores);
+  return filas.map(aPaciente);
 }
 
 async function findById(id) {
-  return pacientes.find((u) => u.id === id) || null;
+  const [filas] = await pool.query('SELECT * FROM pacientes WHERE id = ?', [id]);
+  return filas.length > 0 ? aPaciente(filas[0]) : null;
 }
 
 async function findByDocumento(documento) {
-  return pacientes.find((p) => p.documento === documento) || null;
+  const [filas] = await pool.query('SELECT * FROM pacientes WHERE documento = ?', [documento]);
+  return filas.length > 0 ? aPaciente(filas[0]) : null;
 }
 
 async function create(paciente) {
-  const nuevo = { id: siguienteId++, ...paciente };
-  pacientes.push(nuevo);
-  return nuevo;
+  const [resultado] = await pool.query('INSERT INTO pacientes (nombre, documento, fecha_nacimiento, eps, telefono) VALUES (?, ?, ?, ?, ?)',
+  [paciente.nombre, paciente.documento, paciente.fecha_nacimiento, paciente.eps, paciente.telefono]);
+  return findById(resultado.insertId);
 }
 
 async function actualizar(id, paciente) {
-  const posicion = pacientes.findIndex((u) => u.id === id);
-  if (posicion === -1) {
-    return null;
-  }
-  pacientes[posicion] = { id, ...paciente };
-  return pacientes[posicion];
+  const [resultado] = await pool.query('UPDATE pacientes SET nombre = ?, documento = ?, fecha_nacimiento = ?, eps = ?, telefono = ? WHERE id = ?',
+    [paciente.nombre, paciente.documento, paciente.fecha_nacimiento, paciente.eps, paciente.telefono, id]);
+    if (resultado.affectedRows === 0) return null;
+  return findById(id);
 }
 
 async function eliminar(id) {
-  const posicion = pacientes.findIndex((u) => u.id === id);
-  if (posicion === -1) return false;
-  pacientes.splice(posicion, 1);
-    return true;
+  const [resultado] = await pool.query('DELETE FROM pacientes WHERE id = ?', [id]);
+  return resultado.affectedRows > 0;
   }
 
 module.exports = { findAll, findById, findByDocumento, create, actualizar, eliminar };
