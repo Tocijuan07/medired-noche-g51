@@ -8,41 +8,25 @@
 // =====================================================================
 const pool = require('../db');
 
-function aPaciente(fila){
-  return { ...fila, activo: Boolean(fila.activo) };
-}
-const pacientes = [
-  { id: 1, nombre: 'Oscar Jimenez', documento: '1001234567', fecha_nacimiento: '2004-10-28', eps: 'comfenalco' , telefono: '3154414635' },
-  { id: 2, nombre: 'Ilana Urrea', documento: '1007654321', fecha_nacimiento: '2006-05-09', eps: 'comfandi' , telefono:'3053124241' },
-  { id: 3, nombre: 'Juan Damigo', documento: '1009876543', fecha_nacimiento: '2005-07-09', eps: 'sura', telefono:'3193378512'},
-];
-let siguienteId = 4;
-
 async function findAll(filtros = {}) {
   let sql = 'SELECT * FROM pacientes';
-  const condiciciones = [];
+  const condiciones = [];
   const valores = [];
-  if (filtros.eps) {
-    condiciciones.push('eps = ?');
-    valores.push(filtros.eps);
-  }
-  if (filtros.ids) {
-    condiciciones.push('id IN (?)');
-    valores.push(filtros.ids);
-  }
-  if (condiciciones.length > 0) sql += ' WHERE ' + condiciciones.join(' AND ');
+  if (filtros.eps) { condiciones.push('eps = ?'); valores.push(filtros.eps); }
+  if (filtros.ids) { condiciones.push('id IN (?)'); valores.push(filtros.ids); }
+  if (condiciones.length > 0) sql += ' WHERE ' + condiciones.join(' AND ');
   const [filas] = await pool.query(sql + ' ORDER BY id', valores);
-  return filas.map(aPaciente);
+  return filas;
 }
 
 async function findById(id) {
   const [filas] = await pool.query('SELECT * FROM pacientes WHERE id = ?', [id]);
-  return filas.length > 0 ? aPaciente(filas[0]) : null;
+  return filas.length > 0 ? filas[0] : null;
 }
 
 async function findByDocumento(documento) {
   const [filas] = await pool.query('SELECT * FROM pacientes WHERE documento = ?', [documento]);
-  return filas.length > 0 ? aPaciente(filas[0]) : null;
+     return filas.length > 0 ? filas[0] : null;
 }
 
 async function create(paciente) {
