@@ -7,8 +7,8 @@ const repo = require('../repositories/medicos.repository');
 const { validarMedico, construirMedico } = require('../models/medico');
 const HttpError = require('../utils/http-error');
 
-async function listar() {
-  return repo.findAll();
+async function listar(filtros) {
+  return repo.findAll(filtros);
 }
 
 async function obtener(id) {
@@ -31,4 +31,24 @@ async function crear(datos) {
   return repo.create(medico);
 }
 
-module.exports = { listar, obtener, crear };
+async function actualizar(id, datos) {
+  const existente = await repo.findById(id);
+  if (!existente) throw new HttpError(404, `No existe el medico con id ${id}`);
+
+  const errores = validarMedico(datos);
+  if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
+  const medico = construirMedico(datos);
+
+  const otro = await repo.findByRegistroMedico(medico.registro_medico);
+  if (otro && otro.id !== id) {
+    throw new HttpError(409, `Ya existe un medico con el registro médico ${medico.registro_medico}`);
+  }
+  return repo.actualizar(id, medico);
+}
+
+async function eliminar(id) {
+  const eliminado = await repo.eliminar(id);
+  if (!eliminado) throw new HttpError(404, `Medico no encontrado ${id}` );
+}
+
+module.exports = { listar, obtener, crear, actualizar, eliminar };
