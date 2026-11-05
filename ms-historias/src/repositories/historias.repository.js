@@ -6,7 +6,7 @@
 // Todas las funciones son async (devuelven promesas) para que el cambio
 // a una base de datos real no obligue a modificar la capa de servicio.
 // =====================================================================
-const pool = require('../utils/db');
+const pool = require('../db');
 
 async function findAll(filtros = {}) {
   let sql = 'SELECT * FROM historias';
