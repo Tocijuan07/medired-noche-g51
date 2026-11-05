@@ -14,10 +14,14 @@ function leerId(req) {
 
 // GET /historias
 async function listar(req, res) {
-  const historias = await service.listar();
+  const filtros = {fecha: req.query.fecha};
+  if (req.query.paciente_id) {
+    filtros.paciente_id = Number(req.query.paciente_id);
+    if(!Number.isInteger(filtros.paciente_id) || filtros.paciente_id <= 0) throw new HttpError(400, 'El paciente_id debe ser un entero positivo');
+  }
+  const historias = await service.listar(filtros);
   res.status(200).json(historias);
 }
-
 // GET /historias/:id
 async function obtener(req, res) {
   const historia = await service.obtener(leerId(req));
@@ -30,4 +34,17 @@ async function crear(req, res) {
   res.status(201).location(`${req.baseUrl}/${nuevo.id}`).json(nuevo);
 }
 
-module.exports = { listar, obtener, crear };
+//UPDATE /historias/:id
+async function actualizar(req, res) {
+  const id = leerId(req);
+  const historiaActualizada = await service.actualizar(id, req.body);
+  res.status(200).json(historiaActualizada);
+}
+
+// DELETE /historias/:id
+async function eliminar(req, res) {
+  const id = leerId(req);
+  await service.eliminar(id);
+  res.status(204).end();
+}
+module.exports = { listar, obtener, crear, actualizar, eliminar };

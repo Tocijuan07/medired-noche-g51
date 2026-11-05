@@ -34,13 +34,12 @@ function validarHistoria(datos) {
     return ['Se esperaba un objeto JSON con los datos de la historia clínica'];
   }
   const errores = [];
-  if (!idValido(datos.paciente_id)) errores.push('paciente_id es obligatorio y debe ser un número entero positivo');
-  if (!idValido(datos.medico_id)) errores.push('medico_id es obligatorio y debe ser un número entero positivo');
+  if (!idValido(datos.paciente_id)) errores.push('paciente_id es obligatorio y debe ser un entero positivo');
+  if (!idValido(datos.medico_id)) errores.push('medico_id es obligatorio y debe ser un entero positivo');
   if (!fechaValida(datos.fecha)) errores.push('fecha es obligatoria con formato AAAA-MM-DD');
   if (!textoValido(datos.motivo_consulta)) errores.push('motivo_consulta es obligatorio');
   if (!textoValido(datos.diagnostico)) errores.push('diagnostico es obligatorio');
   if (!textoValido(datos.tratamiento)) errores.push('tratamiento es obligatorio');
-  // medicamento_id es opcional: no todas las consultas recetan algo
   return errores;
 }
 
