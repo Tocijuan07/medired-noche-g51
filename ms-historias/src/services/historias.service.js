@@ -7,8 +7,8 @@ const repo = require('../repositories/historias.repository');
 const { validarHistoria, construirHistoria } = require('../models/historia');
 const HttpError = require('../utils/http-error');
 
-async function listar() {
-  return repo.findAll();
+async function listar(filtros) {
+  return repo.findAll(filtros);
 }
 
 async function obtener(id) {
@@ -20,15 +20,30 @@ async function obtener(id) {
 async function crear(datos) {
   const errores = validarHistoria(datos);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
-
   const historia = construirHistoria(datos);
 
-  // Regla de negocio: no puede repetirse la misma atención
-  // (mismo paciente, mismo médico y misma fecha). 409 = Conflict.
+  // Regla de negocio: no puede repetirse la misma atención (mismo paciente, médico y fecha). 409 = Conflict.
   if (await repo.findDuplicada(historia.paciente_id, historia.medico_id, historia.fecha)) {
-    throw new HttpError(409, `Ya existe una historia de este paciente con este médico el ${historia.fecha}`);
+    throw new HttpError(409, 'Ya existe una historia de este paciente con este médico en esa fecha');
   }
   return repo.create(historia);
 }
 
-module.exports = { listar, obtener, crear };
+async function actualizar(id, datos) {
+  const existente = await repo.findById(id);
+  if (!existente) throw new HttpError(404, `No existe la historia con id ${id}`);
+  const errores = validarHistoria(datos);
+  if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
+  const historia = construirHistoria(datos);
+
+  const otra = await repo.findDuplicada(historia.paciente_id, historia.medico_id, historia.fecha);
+  if (otra && otra.id !== id) throw new HttpError(409, 'Ya existe una historia de este paciente con este médico en esa fecha');
+  return repo.actualizar(id, historia);
+}
+
+async function eliminar(id) {
+  const eliminado = await repo.eliminar(id);
+  if (!eliminado) throw new HttpError(404, `No existe la historia con id ${id}`);
+}
+
+module.exports = { listar, obtener, crear, actualizar, eliminar };
