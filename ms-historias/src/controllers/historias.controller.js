@@ -30,14 +30,14 @@ async function obtener(req, res) {
 
 // POST /historias
 async function crear(req, res) {
-  const nuevo = await service.crear(req.body);
+  const nuevo = await service.crear(req.body, req.headers.authorization);
   res.status(201).location(`${req.baseUrl}/${nuevo.id}`).json(nuevo);
 }
 
 //UPDATE /historias/:id
 async function actualizar(req, res) {
   const id = leerId(req);
-  const historiaActualizada = await service.actualizar(id, req.body);
+  const historiaActualizada = await service.actualizar(id, req.body, req.headers.authorization);
   res.status(200).json(historiaActualizada);
 }
 
