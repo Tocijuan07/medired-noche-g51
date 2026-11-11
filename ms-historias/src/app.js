@@ -34,4 +34,10 @@ app.use((err, req, res, next) => {
   res.status(status).json({ error: err.message, detalles: err.detalles });
 });
 
+//Para mostrar en la terminal cada petición que llega al microservicio
+app.use((req, res, next) => {
+  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 module.exports = app;
