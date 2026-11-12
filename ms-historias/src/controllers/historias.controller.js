@@ -17,16 +17,14 @@ async function listar(req, res) {
   const filtros = {fecha: req.query.fecha};
   if (req.query.paciente_id) {
     filtros.paciente_id = Number(req.query.paciente_id);
-    if(!Number.isInteger(filtros.paciente_id) || filtros.paciente_id <= 0) throw new HttpError(400, 'El paciente_id debe ser un entero positivo');
+    if(!Number.isInteger(filtros.paciente_id) || filtros.paciente_id <= 0) {throw new HttpError(400, 'El paciente_id debe ser un entero positivo');}
   }
-  const historias = await service.listar(filtros);
-  res.status(200).json(await service.listar({ estado: req.query.estado }, req.headers.authorization));​
+  const historias = await service.listar(filtros, req.query.estado, req.headers.authorization);
   res.status(200).json(historias);
 }
 // GET /historias/:id
 async function obtener(req, res) {
-  const historia = await service.obtener(leerId(req));
-  res.status(200).json(await service.obtener(leerId(req), req.headers.authorization));​
+  const historia = await service.obtener(leerId(req), req.headers.authorization);
   res.status(200).json(historia);
 }
 
@@ -38,15 +36,13 @@ async function crear(req, res) {
 
 //UPDATE /historias/:id
 async function actualizar(req, res) {
-  const id = leerId(req);
-  const historiaActualizada = await service.actualizar(id, req.body, req.headers.authorization);
+  const historiaActualizada = await service.actualizar(leerId(req), req.body, req.headers.authorization);
   res.status(200).json(historiaActualizada);
 }
 
 // DELETE /historias/:id
 async function eliminar(req, res) {
-  const id = leerId(req);
-  await service.eliminar(id);
+  await service.eliminar(leerId(req), req.headers.authorization);
   res.status(204).end();
 }
 module.exports = { listar, obtener, crear, actualizar, eliminar };
