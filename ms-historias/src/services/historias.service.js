@@ -7,32 +7,31 @@ const repo = require('../repositories/historias.repository');
 const { validarHistoria, construirHistoria } = require('../models/historia');
 const HttpError = require('../utils/http-error');
 
-const pacientesClient = require('../clients/pacientes.client');​
-const medicosClient = require('../clients/medicos.client');​
+const pacientesClient = require('../clients/pacientes.client');
+const medicosClient = require('../clients/medicos.client');
 
-// Relación: el paciente referenciado debe existir en ms-pacientes​
+// Relación: el paciente referenciado debe existir en ms-pacientes
 
-async function validarPaciente(pacienteId, token) {  ​
+async function validarPaciente(pacienteId, token) { 
 
-	if (!(await pacientesClient.existePaciente(pacienteId, token))) {    ​
+	if (!(await pacientesClient.existePaciente(pacienteId, token))) {   
 
-		throw new HttpError(400, `No existe el paciente con id ${pacienteId}`);  ​
+		throw new HttpError(400, `No existe el paciente con id ${pacienteId}`); 
+	}
 
-	}​
+}
 
-}​
+async function validarMedico(medicoId, token) { 
 
-async function validarMedico(medicoId, token) {  ​
+	if (!(await medicosClient.existeMedico(medicoId, token))) {
 
-	if (!(await medicosClient.existeMedico(medicoId, token))) {    ​
+		throw new HttpError(400, `No existe el médico con id ${medicoId}`);
 
-		throw new HttpError(400, `No existe el médico con id ${medicoId}`);  ​
+	}
 
-	}​
+}
 
-}​
-
-// Agrega a cada historia su objeto paciente y medico, con UNA sola consulta a ms-pacientes y ms-medicos, respectivamente. Si no se puede obtener la información de ms-pacientes o ms-medicos, se devuelve null en el objeto paciente o medico y un aviso de degradación controlada.​
+// Agrega a cada historia su objeto paciente y medico, con UNA sola consulta a ms-pacientes y ms-medicos, respectivamente. Si no se puede obtener la información de ms-pacientes o ms-medicos, se devuelve null en el objeto paciente o medico y un aviso de degradación controlada.
 
 async function componer(historias, token) {
 
@@ -79,21 +78,19 @@ async function componer(historias, token) {
           ? { aviso: 'ms-medicos no disponible' }
           : {})
   }));
-}​
+}
 
-​
+async function listar(filtros, token) {
 
-async function listar(filtros, token) {  ​
+  return componer(await repo.findAll(filtros), token);
 
-  return componer(await repo.findAll(filtros), token);​
+}
 
-}​
-
-async function obtener(id) {
+async function obtener(id, token) {
   const historia = await repo.findById(id);
   if (!historia) throw new HttpError(404, `No existe la historia con id ${id}`);
-  const [compuesto] = await componer([historia], token);​
-  return compuesto;​
+  const [compuesto] = await componer([historia], token);
+  return compuesto;
 }
 
 async function crear(datos, token) {
@@ -105,10 +102,10 @@ async function crear(datos, token) {
   if (await repo.findDuplicada(historia.paciente_id, historia.medico_id, historia.fecha)) {
     throw new HttpError(409, 'Ya existe una historia de este paciente con este médico en esa fecha');
   }
-   await validarPaciente(historia.paciente_id, token);​
-   await validarMedico(historia.medico_id, token);​
+   await validarPaciente(historia.paciente_id, token);
+   await validarMedico(historia.medico_id, token);
    const nuevo = await repo.create(historia);
-   const [compuesto] = await componer([nuevo], token);​
+   const [compuesto] = await componer([nuevo], token);
   return compuesto;
 }
 
@@ -118,13 +115,13 @@ async function actualizar(id, datos, token) {
   const errores = validarHistoria(datos);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
   const historia = construirHistoria(datos);
- await validarPaciente(historia.paciente_id, token);​
- await validarMedico(historia.medico_id, token);​
+ await validarPaciente(historia.paciente_id, token);
+ await validarMedico(historia.medico_id, token);
   const otra = await repo.findDuplicada(historia.paciente_id, historia.medico_id, historia.fecha);
   if (otra && otra.id !== id) throw new HttpError(409, 'Ya existe una historia de este paciente con este médico en esa fecha');
   const actualizado = await repo.actualizar(id, historia);
   if (!actualizado) throw new HttpError(404, `No existe la historia con id ${id}`);
-  const [compuesto] = await componer([actualizado], token);​
+  const [compuesto] = await componer([actualizado], token);
   return compuesto;
 }
 

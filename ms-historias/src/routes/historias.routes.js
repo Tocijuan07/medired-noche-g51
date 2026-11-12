@@ -9,25 +9,8 @@ const HttpError = require('../utils/http-error');
 
 const router = Router();
 
-// El administrador ve a cualquiera; los demás, solo su propio registro
-function propioOAdministrador(req, res, next) {
-  if (req.historia.rol === 'administrador' || req.historia.id === Number(req.params.id)) {
-    return next();
-  }
-  throw new HttpError(403, 'Solo puede consultar su propia información');
-}
-
-// Pública: es la puerta de entrada, todavía no hay token
-router.post('/login', controller.login);
-
 // Desde aquí, todo exige un token válido
 router.use(verificarToken);
-
-router.get('/me', controller.miPerfil);                       // cualquier rol: sus datos
-router.get('/:id', propioOAdministrador, controller.obtener);  // propio o administrador
-
-// Lo que sigue, solo el administrador
-router.use(requiereRol('administrador'));
 
 router.get('/', controller.listar);      // listar todos los usuarios
 router.get('/:id', controller.obtener);  // obtener un usuario por id
