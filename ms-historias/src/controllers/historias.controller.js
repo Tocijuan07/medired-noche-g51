@@ -20,11 +20,13 @@ async function listar(req, res) {
     if(!Number.isInteger(filtros.paciente_id) || filtros.paciente_id <= 0) throw new HttpError(400, 'El paciente_id debe ser un entero positivo');
   }
   const historias = await service.listar(filtros);
+  res.status(200).json(await service.listar({ estado: req.query.estado }, req.headers.authorization));​
   res.status(200).json(historias);
 }
 // GET /historias/:id
 async function obtener(req, res) {
   const historia = await service.obtener(leerId(req));
+  res.status(200).json(await service.obtener(leerId(req), req.headers.authorization));​
   res.status(200).json(historia);
 }
 
