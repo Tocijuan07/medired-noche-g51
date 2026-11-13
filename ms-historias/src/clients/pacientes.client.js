@@ -1,5 +1,5 @@
 // =====================================================================
-// CLIENTE HTTP de ms-libros: la única parte de ms-prestamos que sabe
+// CLIENTE HTTP de ms-pacientes: la única parte de ms-historias que sabe
 // cómo hablar con otro microservicio (análogo al repositorio).
 // =====================================================================
 const HttpError = require('../utils/http-error');
@@ -13,7 +13,7 @@ async function pedir(ruta, token) {
       signal: AbortSignal.timeout(3000),         // no esperar más de 3 segundos
     });
   } catch (error) {
-    return null;                                 // ms-libros caído o sin responder
+    return null;                                 // ms-pacientes caído o sin responder
   }
 }
 
@@ -35,7 +35,7 @@ async function pacientesPorIds(ids, token) {
   if (!respuesta || !respuesta.ok) return null;
   const pacientes = await respuesta.json();
   return new Map(pacientes.map((p) =>
-    [p.id, { id: p.id, nombre: p.nombre, edad: p.edad }]));
+    [p.id, { id: p.id, nombre: p.nombre, documento: p.documento, fecha_nacimiento: p.fecha_nacimiento, eps: p.eps, telefono: p.telefono }]));
 }
 
 module.exports = { existePaciente, pacientesPorIds };

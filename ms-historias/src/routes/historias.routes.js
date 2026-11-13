@@ -14,8 +14,8 @@ router.use(verificarToken);
 
 router.get('/', controller.listar);      // listar todos los usuarios
 router.get('/:id', controller.obtener);  // obtener un usuario por id
-router.post('/', requiereRol('administrador', 'admisiones'), controller.crear);      // crear un usuario
-router.put('/:id', requiereRol('administrador', 'admisiones'), controller.actualizar); // Taller 2: actualizar un usuario por id
-router.delete('/:id', requiereRol('administrador', 'admisiones'), controller.eliminar); // Taller 2: eliminar un usuario por id
+router.post('/', requiereRol('administrador', 'medico'), controller.crear);      // crear un usuario
+router.put('/:id', requiereRol('administrador', 'medico'), controller.actualizar); // Taller 2: actualizar un usuario por id
+router.delete('/:id', requiereRol('administrador', 'medico'), controller.eliminar); // Taller 2: eliminar un usuario por id
 
 module.exports = router;

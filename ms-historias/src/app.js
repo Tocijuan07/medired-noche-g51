@@ -3,20 +3,26 @@
 // Aquí se registran los middlewares, las rutas y el manejo de errores.
 // =====================================================================
 const express = require('express');
-const usuariosRoutes = require('./routes/historias.routes');
+const historiasRoutes = require('./routes/historias.routes');
 
 const app = express();
 
 // Middleware: convierte el cuerpo JSON de la petición en un objeto (req.body)
 app.use(express.json());
 
+//Para mostrar en la terminal cada petición que llega al microservicio
+app.use((req, res, next) => {
+  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // Endpoint de salud: permite verificar que el microservicio está vivo
 app.get('/health', (req, res) => {
   res.json({ servicio: 'ms-historias', estado: 'ok' });
 });
 
-// Rutas del recurso. Todas las URIs de este microservicio empiezan por /usuarios
-app.use('/historias', usuariosRoutes);
+// Rutas del recurso. Todas las URIs de este microservicio empiezan por /historias
+app.use('/historias', historiasRoutes);
 
 // Cualquier otra ruta: 404 Not Found
 app.use((req, res) => {
@@ -32,12 +38,6 @@ app.use((err, req, res, next) => {
   const status = err.status || 500;
   if (status === 500) console.error(err);
   res.status(status).json({ error: err.message, detalles: err.detalles });
-});
-
-//Para mostrar en la terminal cada petición que llega al microservicio
-app.use((req, res, next) => {
-  console.log(`${new Date().toLocaleTimeString()} ${req.method} ${req.originalUrl}`);
-  next();
 });
 
 module.exports = app;
