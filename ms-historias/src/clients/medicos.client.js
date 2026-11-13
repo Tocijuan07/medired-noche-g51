@@ -1,6 +1,6 @@
 // =====================================================================
-// CLIENTE HTTP de ms-libros: la única parte de ms-prestamos que sabe
-// cómo hablar con otro microservicio (análogo al repositorio).
+// CLIENTE HTTP de ms-medicos: la única parte de ms-historias que sabe
+// cómo hablar con ms-medicos (análogo al repositorio).
 // =====================================================================
 const HttpError = require('../utils/http-error');
 const MEDICOS_URL = process.env.MEDICOS_URL;
@@ -13,7 +13,7 @@ async function pedir(ruta, token) {
       signal: AbortSignal.timeout(3000),         // no esperar más de 3 segundos
     });
   } catch (error) {
-    return null;                                 // ms-libros caído o sin responder
+    return null;                                 // ms-medicos caído o sin responder
   }
 }
 
@@ -29,6 +29,7 @@ async function existeMedico(id, token) {
 }
 
 // COMPOSICIÓN: varios médicos en UNA petición → Map id → médico (null si no responde)
+// Solo se usan los campos acordados en el contrato: id, nombre y especialidad.
 async function medicosPorIds(ids, token) {
   if (ids.length === 0) return new Map();
   const respuesta = await pedir(`/medicos?ids=${ids.join(',')}`, token);

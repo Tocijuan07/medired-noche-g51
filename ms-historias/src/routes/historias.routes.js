@@ -1,21 +1,20 @@
 // =====================================================================
 // CAPA DE PRESENTACIÓN (rutas)
-// Asocia cada método HTTP + URI con una función del controlador.
+// Asocia cada método HTTP + URI con una función del controlador
+// y decide quién puede usar cada ruta (tabla de permisos del Taller 1).
 // =====================================================================
 const { Router } = require('express');
 const controller = require('../controllers/historias.controller');
 const { verificarToken, requiereRol } = require('../middlewares/auth');
-const HttpError = require('../utils/http-error');
 
 const router = Router();
 
-// Desde aquí, todo exige un token válido
-router.use(verificarToken);
+router.use(verificarToken);                      // todas las rutas exigen token (sin token: 401)
 
-router.get('/', controller.listar);      // listar todos los usuarios
-router.get('/:id', controller.obtener);  // obtener un usuario por id
-router.post('/', requiereRol('administrador', 'medico'), controller.crear);      // crear un usuario
-router.put('/:id', requiereRol('administrador', 'medico'), controller.actualizar); // Taller 2: actualizar un usuario por id
-router.delete('/:id', requiereRol('administrador', 'medico'), controller.eliminar); // Taller 2: eliminar un usuario por id
+router.get('/', controller.listar);              // cualquier rol autenticado (?paciente_id= y ?fecha=)
+router.get('/:id', controller.obtener);
+router.post('/', requiereRol('administrador', 'medico'), controller.crear);
+router.put('/:id', requiereRol('administrador', 'medico'), controller.actualizar);
+router.delete('/:id', requiereRol('administrador', 'medico'), controller.eliminar);
 
 module.exports = router;

@@ -1,10 +1,7 @@
 // =====================================================================
-// CAPA DE ACCESO A DATOS (repositorio)
-// Única capa que sabe DÓNDE se guardan los datos.
-// Versión del Taller 1: datos en memoria (se pierden al reiniciar).
-// En el Taller 2 se reemplaza por MySQL SIN tocar las otras capas.
-// Todas las funciones son async (devuelven promesas) para que el cambio
-// a una base de datos real no obligue a modificar la capa de servicio.
+// CAPA DE ACCESO A DATOS (repositorio) — versión MySQL
+// Única capa que sabe dónde y cómo se guardan los datos.
+// Todas las consultas usan parámetros (?) para evitar la inyección SQL.
 // =====================================================================
 const pool = require('../db');
 
@@ -58,7 +55,7 @@ async function actualizar(id, h) {
   return findById(id);
 }
 
-async function eliminar (id) {
+async function eliminar(id) {
   const [result] = await pool.query('DELETE FROM historias WHERE id = ?', [id]);
   return result.affectedRows > 0;
 }

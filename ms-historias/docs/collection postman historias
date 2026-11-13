@@ -1,0 +1,188 @@
+{
+  "info": {
+    "_postman_id": "b07d2148-72bc-4207-b41a-bae72a135b68",
+    "name": "ms-historias",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48909639"
+  },
+  "item": [
+    {
+      "name": "historias",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "historia id1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "historia error",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "historia valida",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"paciente_id\": 1,\r\n  \"medico_id\": 2,\r\n  \"fecha\": \"2026-10-15\",\r\n  \"motivo_consulta\": \"Dolor de garganta\",\r\n  \"diagnostico\": \"Faringitis\",\r\n  \"tratamiento\": \"Reposo y líquidos tibios\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "POST http://localhost:3005/historias",
+          "protocol": "POST http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3005",
+          "path": [
+            "historias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "falta atributo",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"paciente_id\": 1,\r\n  \"medico_id\": 2,\r\n  \"fecha\": \"2026-10-16\",\r\n  \"motivo_consulta\": \"Dolor de garganta\",\r\n  \"tratamiento\": \"Reposo\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "POST http://localhost:3005/historias",
+          "protocol": "POST http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3005",
+          "path": [
+            "historias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "mismo paciente, otra fecha",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"paciente_id\": 1,\r\n  \"medico_id\": 2,\r\n  \"fecha\": \"2026-10-20\",\r\n  \"motivo_consulta\": \"Control de seguimiento\",\r\n  \"diagnostico\": \"Faringitis en recuperación\",\r\n  \"tratamiento\": \"Continuar hidratación\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "POST http://localhost:3005/historias",
+          "protocol": "POST http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3005",
+          "path": [
+            "historias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "fecha invalida",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"paciente_id\": 1,\r\n  \"medico_id\": 1,\r\n  \"fecha\": \"15/10/2026\",\r\n  \"motivo_consulta\": \"Prueba\",\r\n  \"diagnostico\": \"Prueba\",\r\n  \"tratamiento\": \"Prueba\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "POST http://localhost:3005/historias",
+          "protocol": "POST http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3005",
+          "path": [
+            "historias"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "pacientes aqui",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "medicos aqui",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ]
+}

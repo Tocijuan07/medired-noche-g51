@@ -1,6 +1,6 @@
 // =====================================================================
 // CLIENTE HTTP de ms-pacientes: la única parte de ms-historias que sabe
-// cómo hablar con otro microservicio (análogo al repositorio).
+// cómo hablar con ms-pacientes (análogo al repositorio).
 // =====================================================================
 const HttpError = require('../utils/http-error');
 const PACIENTES_URL = process.env.PACIENTES_URL;
@@ -29,13 +29,13 @@ async function existePaciente(id, token) {
 }
 
 // COMPOSICIÓN: varios pacientes en UNA petición → Map id → paciente (null si no responde)
+// Solo se usan los campos acordados en el contrato: id y nombre.
 async function pacientesPorIds(ids, token) {
   if (ids.length === 0) return new Map();
   const respuesta = await pedir(`/pacientes?ids=${ids.join(',')}`, token);
   if (!respuesta || !respuesta.ok) return null;
   const pacientes = await respuesta.json();
-  return new Map(pacientes.map((p) =>
-    [p.id, { id: p.id, nombre: p.nombre, documento: p.documento, fecha_nacimiento: p.fecha_nacimiento, eps: p.eps, telefono: p.telefono }]));
+  return new Map(pacientes.map((p) => [p.id, { id: p.id, nombre: p.nombre }]));
 }
 
 module.exports = { existePaciente, pacientesPorIds };
