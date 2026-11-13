@@ -12,22 +12,22 @@ const medicosClient = require('../clients/medicos.client');
 
 // Relación: el paciente referenciado debe existir en ms-pacientes
 
-async function validarPaciente(pacienteId, token) { 
+async function validarPaciente(pacienteId, token) {
 
-	if (!(await pacientesClient.existePaciente(pacienteId, token))) {   
+  if (!(await pacientesClient.existePaciente(pacienteId, token))) {
 
-		throw new HttpError(400, `No existe el paciente con id ${pacienteId}`); 
-	}
+    throw new HttpError(400, `No existe el paciente con id ${pacienteId}`);
+  }
 
 }
 
-async function validarMedico(medicoId, token) { 
+async function validarMedico(medicoId, token) {
 
-	if (!(await medicosClient.existeMedico(medicoId, token))) {
+  if (!(await medicosClient.existeMedico(medicoId, token))) {
 
-		throw new HttpError(400, `No existe el médico con id ${medicoId}`);
+    throw new HttpError(400, `No existe el médico con id ${medicoId}`);
 
-	}
+  }
 
 }
 
@@ -98,14 +98,18 @@ async function crear(datos, token) {
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
   const historia = construirHistoria(datos);
 
+  // fecha local AAAA-MM-DD (toISOString usaría UTC y podría adelantar el día)
+  const hoy = new Date().toLocaleDateString('en-CA');
+  if (historia.fecha > hoy) throw new HttpError(400, 'La fecha de la historia no puede ser futura');
+
   // Regla de negocio: no puede repetirse la misma atención (mismo paciente, médico y fecha). 409 = Conflict.
   if (await repo.findDuplicada(historia.paciente_id, historia.medico_id, historia.fecha)) {
     throw new HttpError(409, 'Ya existe una historia de este paciente con este médico en esa fecha');
   }
-   await validarPaciente(historia.paciente_id, token);
-   await validarMedico(historia.medico_id, token);
-   const nuevo = await repo.create(historia);
-   const [compuesto] = await componer([nuevo], token);
+  await validarPaciente(historia.paciente_id, token);
+  await validarMedico(historia.medico_id, token);
+  const nuevo = await repo.create(historia);
+  const [compuesto] = await componer([nuevo], token);
   return compuesto;
 }
 
@@ -115,8 +119,8 @@ async function actualizar(id, datos, token) {
   const errores = validarHistoria(datos);
   if (errores.length > 0) throw new HttpError(400, 'Datos inválidos', errores);
   const historia = construirHistoria(datos);
- await validarPaciente(historia.paciente_id, token);
- await validarMedico(historia.medico_id, token);
+  await validarPaciente(historia.paciente_id, token);
+  await validarMedico(historia.medico_id, token);
   const otra = await repo.findDuplicada(historia.paciente_id, historia.medico_id, historia.fecha);
   if (otra && otra.id !== id) throw new HttpError(409, 'Ya existe una historia de este paciente con este médico en esa fecha');
   const actualizado = await repo.actualizar(id, historia);
