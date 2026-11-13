@@ -1,0 +1,287 @@
+{
+  "info": {
+    "name": "ms-citas",
+    "_exporter_id": "g51",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:3004" },
+    { "key": "token", "value": "PEGA_AQUI_TU_TOKEN" },
+    { "key": "token_medico", "value": "PEGA_AQUI_TOKEN_ROL_MEDICO" }
+  ],
+  "item": [
+    {
+      "name": "1 Listar todos",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "2 Filtrar por sede",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/citas?sede=Bogot%C3%A1",
+          "host": ["{{base_url}}"],
+          "path": ["citas"],
+          "query": [{ "key": "sede", "value": "Bogotá" }]
+        },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "4 Obtener un registro existente",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas/1", "host": ["{{base_url}}"], "path": ["citas", "1"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "5 Obtener un id que no existe (404)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas/9999", "host": ["{{base_url}}"], "path": ["citas", "9999"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "6 Obtener con id no numerico (400)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas/abc", "host": ["{{base_url}}"], "path": ["citas", "abc"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "7 Crear con datos validos (201)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 1,\n  \"medico_id\": 2,\n  \"fecha_hora\": \"2027-12-01T10:00\",\n  \"sede\": \"Cali\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "8 Crear sin un atributo obligatorio (400)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 1,\n  \"medico_id\": 2,\n  \"sede\": \"Cali\"\n}"
+        }
+      }
+    },
+    {
+      "name": "9 Crear con fecha pasada (400) o medico ocupado (409)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 1,\n  \"medico_id\": 1,\n  \"fecha_hora\": \"2020-01-01T09:00\",\n  \"sede\": \"Bogota\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "9b Crear con medico ocupado en esa fecha_hora (409)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 2,\n  \"medico_id\": 1,\n  \"fecha_hora\": \"2027-11-10T09:00\",\n  \"sede\": \"Bogota\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "10 Actualizar un registro existente (200)",
+      "request": {
+        "method": "PUT",
+        "url": { "raw": "{{base_url}}/citas/1", "host": ["{{base_url}}"], "path": ["citas", "1"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 1,\n  \"medico_id\": 1,\n  \"fecha_hora\": \"2027-12-20T08:00\",\n  \"sede\": \"Bogota\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "11 Actualizar un id que no existe (404)",
+      "request": {
+        "method": "PUT",
+        "url": { "raw": "{{base_url}}/citas/9999", "host": ["{{base_url}}"], "path": ["citas", "9999"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 1,\n  \"medico_id\": 1,\n  \"fecha_hora\": \"2027-12-20T08:00\",\n  \"sede\": \"Bogota\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "12 Eliminar un registro existente (204)",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{base_url}}/citas/999", "host": ["{{base_url}}"], "path": ["citas", "999"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "13 Eliminar el mismo registro otra vez (404)",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{base_url}}/citas/999", "host": ["{{base_url}}"], "path": ["citas", "999"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "14 Peticion sin token (401)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] }
+      }
+    },
+    {
+      "name": "15 Token inventado o modificado (401)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [{ "key": "Authorization", "value": "Bearer token-inventado-123" }]
+      }
+    },
+    {
+      "name": "16 GET con token de rol que solo consulta (200)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token_medico}}" }]
+      }
+    },
+    {
+      "name": "17 POST con token de rol sin permiso (403)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token_medico}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 1,\n  \"medico_id\": 1,\n  \"fecha_hora\": \"2027-12-25T09:00\",\n  \"sede\": \"Bogota\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "18 POST con token de rol con permiso (201)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 2,\n  \"medico_id\": 3,\n  \"fecha_hora\": \"2027-12-26T10:00\",\n  \"sede\": \"Medellin\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "19 Crear con referencia valida (201 con objetos)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 3,\n  \"medico_id\": 1,\n  \"fecha_hora\": \"2027-12-27T11:00\",\n  \"sede\": \"Bogota\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "20 Crear con referencia a un id que no existe (400)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 9999,\n  \"medico_id\": 1,\n  \"fecha_hora\": \"2027-12-28T11:00\",\n  \"sede\": \"Bogota\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    },
+    {
+      "name": "21 Obtener por id (200 con objetos relacionados)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas/1", "host": ["{{base_url}}"], "path": ["citas", "1"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "22 Listar: en la terminal de ms-pacientes/ms-medicos se ve UNA peticion ?ids= (200)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "23 Listar con ms-pacientes detenido (200 + null + aviso)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+      }
+    },
+    {
+      "name": "24 Crear con ms-pacientes detenido (503)",
+      "request": {
+        "method": "POST",
+        "url": { "raw": "{{base_url}}/citas", "host": ["{{base_url}}"], "path": ["citas"] },
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paciente_id\": 1,\n  \"medico_id\": 2,\n  \"fecha_hora\": \"2027-12-29T12:00\",\n  \"sede\": \"Cali\",\n  \"estado\": \"programada\"\n}"
+        }
+      }
+    }
+  ]
+}

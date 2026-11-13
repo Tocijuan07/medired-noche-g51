@@ -1,21 +1,11 @@
 // =====================================================================
 // CAPA DE ACCESO A DATOS (repositorio)
 // Única capa que sabe DÓNDE se guardan los datos.
-// Versión con MySQL: los datos se guardan en la base medired_citas.
+// Versión con MySQL: los datos se guardan en la base citas_db.
 // Todas las funciones son async (devuelven promesas) para que la capa
 // de servicio no cambie.
 // =====================================================================
-const mysql = require('mysql2/promise');
-
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || '127.0.0.1',
-  port: Number(process.env.DB_PORT) || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'root',
-  database: process.env.DB_NAME || 'medired_citas',
-  waitForConnections: true,
-  connectionLimit: 10,
-});
+const pool = require('../db');
 
 async function findAll() {
   const [filas] = await pool.query('SELECT * FROM citas ORDER BY id');
