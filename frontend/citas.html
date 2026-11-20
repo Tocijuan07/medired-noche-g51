@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MediRed IPS · Citas</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="barra-superior">
+      <span class="marca">MediRed <small>IPS</small></span>
+      <div class="persona">
+        <span><strong id="nombre-usuario"></strong> <span class="rol" id="rol-usuario"></span></span>
+        <button id="cerrar-sesion" type="button">Cerrar sesión</button>
+      </div>
+    </div>
+    <nav id="menu" aria-label="Secciones"></nav>
+  </header>
+
+  <main>
+    <div class="cabecera-seccion">
+      <div>
+        <h1 id="titulo">Citas</h1>
+        <p class="resumen" id="resumen">Cargando…</p>
+      </div>
+      <div class="herramientas">
+        <label class="oculto" for="fecha">Fecha</label>
+        <input type="date" id="fecha">
+        <button class="boton boton-suave" id="todas-fechas" type="button">Todas las fechas</button>
+        <div class="filtro" id="filtro-estado" role="group" aria-label="Filtrar por estado"></div>
+        <button class="boton" id="nuevo" hidden>Crear cita</button>
+      </div>
+    </div>
+    <div id="avisos"></div>
+    <div class="tabla-envoltura">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th scope="col">Fecha y hora</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Médico</th>
+            <th scope="col">Sede</th>
+            <th scope="col">Estado</th>
+            <th scope="col"><span class="oculto">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody id="lista"></tbody>
+      </table>
+    </div>
+  </main>
+  <div id="mensajes"></div>
+  <dialog id="dialogo"></dialog>
+
+  <script src="js/config.js"></script>
+  <script src="js/sesion.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/citas.js"></script>
+</body>
+</html>

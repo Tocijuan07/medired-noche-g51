@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MediRed IPS · Iniciar sesión</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <div class="entrada">
+    <section class="sala">
+      <div>
+        <div class="logo">
+          <span class="cruz" aria-hidden="true"></span>
+          <h1>MediRed <small>IPS</small></h1>
+        </div>
+        <p>Pacientes, médicos, citas e historias clínicas de la clínica, en un solo lugar.</p>
+      </div>
+      <svg class="pulso" viewBox="0 0 460 90" aria-hidden="true">
+        <polyline class="tenue" points="0,45 460,45"/>
+        <polyline points="0,45 120,45 140,45 158,12 182,80 202,28 216,45 300,45 318,45 334,22 350,64 362,45 460,45"/>
+      </svg>
+    </section>
+
+    <section class="acceso">
+      <form id="form-login" novalidate>
+        <h2>Iniciar sesión</h2>
+        <p class="indicacion">Use el email y la contraseña de su cuenta.</p>
+        <label class="campo"><span>Email</span>
+          <input name="email" type="email" autocomplete="username" required>
+        </label>
+        <label class="campo"><span>Contraseña</span>
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="boton" type="submit">Entrar</button>
+        <p class="error-acceso" id="error-login" role="alert"></p>
+      </form>
+    </section>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/sesion.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
