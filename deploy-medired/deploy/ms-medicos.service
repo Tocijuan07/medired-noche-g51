@@ -1,0 +1,16 @@
+# Copia de /etc/systemd/system/ms-medicos.service (servidor2)
+# Instalar:  sudo cp deploy/ms-medicos.service /etc/systemd/system/
+#            sudo systemctl daemon-reload && sudo systemctl enable --now ms-medicos
+[Unit]
+Description=Microservicio medicos - medired
+After=network.target
+
+[Service]
+User=nodeapps
+Group=nodeapps
+WorkingDirectory=/srv/medired/app/ms-medicos
+ExecStart=/usr/bin/node --env-file=.env src/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

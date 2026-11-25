@@ -1,0 +1,16 @@
+# Copia de /etc/systemd/system/ms-citas.service (servidor2)
+# Instalar:  sudo cp deploy/ms-citas.service /etc/systemd/system/
+#            sudo systemctl daemon-reload && sudo systemctl enable --now ms-citas
+[Unit]
+Description=Microservicio citas - medired
+After=network.target
+
+[Service]
+User=nodeapps
+Group=nodeapps
+WorkingDirectory=/srv/medired/app/ms-citas
+ExecStart=/usr/bin/node --env-file=.env src/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+# Fragmento de /etc/mysql/mysql.conf.d/mysqld.cnf (servidor1)
+# Solo se cambia esta línea dentro de la sección [mysqld]; el resto del archivo queda igual.
+# MySQL escucha en loopback y en la IP privada de servidor1 (sin espacio después de la coma).
+#
+# Aplicar:  sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+#           sudo systemctl restart mysql
+#           sudo ss -tlnp | grep 3306      # debe aparecer 10.0.0.242:3306
+
+[mysqld]
+bind-address = 127.0.0.1,10.0.0.242
