@@ -4,8 +4,9 @@
 // No sabe nada de HTTP ni de bases de datos.
 //
 // Una cita se asocia a un paciente (paciente_id) y a un médico (medico_id).
-// Esos IDs pertenecen a otros microservicios (ms-pacientes y ms-medicos),
-// por eso aquí solo se valida su formato, no su existencia.
+// Esos IDs pertenecen a otros microservicios (ms-pacientes y ms-medicos):
+// aquí solo se valida su FORMATO. Que existan lo verifica la capa de
+// servicio consultando esos microservicios por REST (src/clients/).
 // =====================================================================
 
 function listaDesdeEnv(nombre, valorPorDefecto) {
